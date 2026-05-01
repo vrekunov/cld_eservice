@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ціни на послуги | E-SERVICE Tesla</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --red: #E51937;
+            --red-dark: #b8102a;
+            --dark: #111111;
+            --mid: #2a2a2a;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --grey: #888;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+        body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--dark); }
+
+        .navbar { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); padding: 0; height: 72px; box-shadow: 0 1px 0 rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
+        .navbar .container { height: 100%; }
+        .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; color: var(--dark) !important; text-transform: uppercase; }
+        .navbar-brand span { color: var(--red); }
+        .nav-link { font-weight: 600; font-size: 0.82rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dark) !important; padding: 6px 14px !important; border-radius: 4px; transition: color 0.2s, background 0.2s; }
+        .nav-link:hover, .nav-link.active-page { color: var(--red) !important; background: rgba(229,25,55,0.06); }
+        .nav-pill { display: flex; align-items: center; gap: 4px; background: var(--light); border-radius: 6px; padding: 3px; }
+        .nav-pill a { font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--grey) !important; text-decoration: none; padding: 5px 10px; border-radius: 4px; transition: all 0.2s; }
+        .nav-pill a.active { background: var(--white); color: var(--red) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn-nav { background: var(--red); color: white !important; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 22px !important; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.2s; white-space: nowrap; }
+        .btn-nav:hover { background: var(--red-dark) !important; transform: translateY(-1px); }
+
+        .page-header { background: var(--dark); padding: 80px 0 70px; position: relative; overflow: hidden; }
+        .page-header::before { content: 'ЦІНИ'; position: absolute; font-family: 'Barlow Condensed', sans-serif; font-size: 22vw; font-weight: 900; color: rgba(255,255,255,0.03); top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none; }
+        .page-header-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header-label::before { content: ''; width: 24px; height: 2px; background: var(--red); }
+        .page-header h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(2.8rem, 6vw, 4.5rem); text-transform: uppercase; color: white; line-height: 0.95; letter-spacing: -1px; }
+        .page-header h1 span { color: var(--red); }
+        .page-header-sub { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.55); margin-top: 16px; }
+
+        .pricing-body { padding: 80px 0 60px; }
+
+        .category-block { margin-bottom: 70px; }
+        .category-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .category-icon { width: 48px; height: 48px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; flex-shrink: 0; }
+        .category-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .category-desc { font-size: 0.85rem; color: var(--grey); }
+
+        .price-row { display: flex; align-items: center; padding: 18px 0; border-bottom: 1px solid #f0f0f0; gap: 16px; transition: background 0.2s; }
+        .price-row:hover { background: var(--light); margin: 0 -20px; padding: 18px 20px; border-radius: 6px; border-bottom-color: transparent; }
+        .price-row:last-child { border-bottom: none; }
+        .price-row-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(229,25,55,0.08); display: flex; align-items: center; justify-content: center; color: var(--red); font-size: 0.95rem; flex-shrink: 0; }
+        .price-row-info { flex: 1; }
+        .price-row-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
+        .price-row-desc { font-size: 0.82rem; color: var(--grey); }
+        .price-row-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--red); white-space: nowrap; }
+
+        .sidebar-sticky { position: sticky; top: 92px; }
+        .sidebar-card { background: var(--dark); border-radius: 8px; padding: 32px; color: white; margin-bottom: 20px; }
+        .sidebar-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; margin-bottom: 14px; }
+        .sidebar-card p { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 20px; }
+        .btn-sidebar { display: block; text-align: center; background: var(--red); color: white; font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 13px 20px; border-radius: 4px; text-decoration: none; transition: background 0.2s; }
+        .btn-sidebar:hover { background: var(--red-dark); color: white; }
+
+        .info-card { border: 1px solid #eee; border-radius: 8px; padding: 24px; }
+        .info-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 0.88rem; }
+        .info-item:last-child { margin-bottom: 0; }
+        .info-item i { color: var(--red); margin-top: 2px; flex-shrink: 0; }
+        .info-item strong { display: block; font-weight: 600; margin-bottom: 2px; }
+        .info-item span { color: var(--grey); font-size: 0.82rem; }
+
+        .footer-section { background: var(--light); padding: 70px 0 30px; border-top: 1px solid #e8e8e8; }
+        .footer-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+        .footer-brand span { color: var(--red); }
+        .footer-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 20px; }
+        .footer-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 0.9rem; color: #444; }
+        .footer-item i { color: var(--red); margin-top: 2px; }
+        .footer-hours { font-size: 0.85rem; color: #666; margin-bottom: 6px; }
+        .social-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--dark); color: white; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: 600; margin-right: 8px; margin-bottom: 8px; transition: background 0.2s, transform 0.2s; }
+        .social-btn:hover { background: var(--red); color: white; transform: translateY(-2px); }
+        .footer-divider { border: none; border-top: 1px solid #e0e0e0; margin: 40px 0 20px; }
+        .copyright { font-size: 0.82rem; color: var(--grey); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .category-block { animation: fadeUp 0.5s ease both; }
+        .category-block:nth-child(1) { animation-delay: 0.1s; }
+        .category-block:nth-child(2) { animation-delay: 0.2s; }
+        .category-block:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container d-flex align-items-center gap-3">
+            <a class="navbar-brand me-4" href="ua.html">E-<span>SERVICE</span></a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="ua.html#services">Послуги</a></li>
+                    <li class="nav-item"><a class="nav-link active-page" href="pricing_ua.html">Ціни</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ua.html#about">Про нас</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ua.html#location">Контакти</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <div class="nav-pill">
+                        <a href="pricing_ua.html" class="active">УКР</a>
+                        <a href="pricing_en.html">ENG</a>
+                    </div>
+                    <a href="booking_ua.html" class="btn-nav">Записатися</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <div class="page-header-label">Прозорі ціни</div>
+            <h1>Вартість<br><span>Послуг</span></h1>
+            <p class="page-header-sub">Без прихованих платежів. Усі ціни включають роботу та ПДВ.</p>
+        </div>
+    </header>
+
+    <section class="pricing-body">
+        <div class="container">
+            <div class="row g-5">
+
+                <div class="col-lg-8">
+
+                    <div class="category-block">
+                        <div class="category-header">
+                            <div class="category-icon"><i class="bi bi-cpu"></i></div>
+                            <div>
+                                <div class="category-name">Діагностика та ПЗ</div>
+                                <div class="category-desc">Сертифікована діагностика Tesla Toolbox</div>
+                            </div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-search"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Комплексна комп'ютерна діагностика</div>
+                                <div class="price-row-desc">Читання помилок, перевірка всіх систем (Toolbox)</div>
+                            </div>
+                            <div class="price-row-tag">1 200 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-battery-full"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Перевірка стану батареї (Health Check)</div>
+                                <div class="price-row-desc">Детальний звіт про деградацію та ємність</div>
+                            </div>
+                            <div class="price-row-tag">1 500 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-arrow-repeat"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Оновлення ПЗ та навігації</div>
+                                <div class="price-row-desc">Встановлення останніх версій карт та прошивки</div>
+                            </div>
+                            <div class="price-row-tag">800 ₴</div>
+                        </div>
+                    </div>
+
+                    <div class="category-block">
+                        <div class="category-header">
+                            <div class="category-icon"><i class="bi bi-tools"></i></div>
+                            <div>
+                                <div class="category-name">Технічне обслуговування</div>
+                                <div class="category-desc">Планове та профілактичне обслуговування</div>
+                            </div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-wind"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Заміна фільтра салону</div>
+                                <div class="price-row-desc">Фільтр (вугільний / HEPA) + робота</div>
+                            </div>
+                            <div class="price-row-tag">1 100 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-disc"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Обслуговування гальмівних супортів</div>
+                                <div class="price-row-desc">Очищення та змащування (рекомендовано раз на рік)</div>
+                            </div>
+                            <div class="price-row-tag">1 400 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-thermometer-half"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Перевірка та заправка кондиціонера</div>
+                                <div class="price-row-desc">Вакуумування та заправка фреоном R1234yf/R134a</div>
+                            </div>
+                            <div class="price-row-tag">2 200 ₴</div>
+                        </div>
+                    </div>
+
+                    <div class="category-block">
+                        <div class="category-header">
+                            <div class="category-icon"><i class="bi bi-paint-bucket"></i></div>
+                            <div>
+                                <div class="category-name">Кузов та фарбування</div>
+                                <div class="category-desc">Кузовний ремонт з підбором кольору</div>
+                            </div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-brush"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Беззафарбовне видалення вм'ятин (PDR)</div>
+                                <div class="price-row-desc">За одну вм'ятину, стандартний розмір</div>
+                            </div>
+                            <div class="price-row-tag">від 600 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-car-front"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Перефарбування панелі</div>
+                                <div class="price-row-desc">Заводський колір, за одну панель</div>
+                            </div>
+                            <div class="price-row-tag">від 4 500 ₴</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-row-icon"><i class="bi bi-shield-check"></i></div>
+                            <div class="price-row-info">
+                                <div class="price-row-name">Антигравійна плівка PPF</div>
+                                <div class="price-row-desc">Самовідновлювальна плівка на капот / повний перед</div>
+                            </div>
+                            <div class="price-row-tag">від 8 000 ₴</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="sidebar-sticky">
+                        <div class="sidebar-card">
+                            <div class="sidebar-card-title">Потрібен індивідуальний розрахунок?</div>
+                            <p>Не знайшли потрібну послугу? Залиште заявку, і наш майстер зв'яжеться з вами.</p>
+                            <a href="booking_ua.html" class="btn-sidebar">Отримати безкоштовну консультацію</a>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-item">
+                                <i class="bi bi-shield-check"></i>
+                                <div><strong>Гарантія на всі роботи</strong><span>Кожна послуга супроводжується письмовою гарантією</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-box-seam"></i>
+                                <div><strong>Тільки оригінальні запчастини Tesla</strong><span>Без замінників та сірих компонентів</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-clock"></i>
+                                <div><strong>Прозорі терміни</strong><span>Ви знатимете строки до початку робіт</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="bi bi-telephone"></i>
+                                <div><strong>+380 (068) 435-78-58</strong><span>Пн–Сб, 8:00 – 18:00</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="location" class="footer-section">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-4">
+                    <div class="footer-brand">E-<span>SERVICE</span></div>
+                    <p style="font-size:0.88rem; color:#666; line-height:1.6; max-width:260px;">Сертифікований сервісний центр Tesla у Львові. Професійний догляд за вашим електромобілем.</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Зв'язатися з нами</div>
+                    <div class="footer-item"><i class="bi bi-telephone"></i> +380 (068) 435-78-58</div>
+                    <div class="footer-item"><i class="bi bi-geo-alt"></i> вул. Патона, буд.1,<br>м. Львів, 79040</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Графік роботи</div>
+                    <div class="footer-hours">Пн – Пт: 8:00 – 18:00</div>
+                    <div class="footer-hours">Субота: 9:00 – 16:00</div>
+                    <div class="footer-hours" style="color:var(--red)">Неділя: Вихідний</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-title">Ми у соцмережах</div>
+                    <a href="#" class="social-btn"><i class="bi bi-instagram"></i> Instagram</a>
+                    <a href="#" class="social-btn"><i class="bi bi-telegram"></i> Telegram</a>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="copyright">© 2026 E-SERVICE Tesla Center. Всі права захищені.</div>
+                <a href="booking_ua.html" style="font-size:0.82rem; color:var(--red); text-decoration:none; font-weight:600;">Записатися на сервіс →</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

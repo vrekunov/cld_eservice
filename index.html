@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla Service Center | E-SERVICE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --red: #E51937;
+            --red-dark: #b8102a;
+            --dark: #111111;
+            --dark2: #1a1a1a;
+            --mid: #2a2a2a;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --grey: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ── NAVBAR ─────────────────────────────── */
+        .navbar {
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            padding: 0;
+            height: 72px;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .container { height: 100%; }
+        .navbar-brand {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--dark) !important;
+            text-transform: uppercase;
+        }
+        .navbar-brand span { color: var(--red); }
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--dark) !important;
+            padding: 6px 14px !important;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .nav-link:hover { color: var(--red) !important; background: rgba(229,25,55,0.06); }
+        .nav-link.active-page { color: var(--red) !important; }
+
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-right: 20px;
+        }
+        .lang-switcher a { color: var(--grey); text-decoration: none; transition: color 0.2s; padding: 2px 4px; }
+        .lang-switcher a:hover, .lang-switcher a.active { color: var(--red); }
+        .lang-divider { color: #ddd; }
+
+        .btn-nav {
+            background: var(--red);
+            color: white !important;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 9px 22px !important;
+            border-radius: 3px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+            white-space: nowrap;
+        }
+        .btn-nav:hover { background: var(--red-dark) !important; transform: translateY(-1px); }
+
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--light);
+            border-radius: 6px;
+            padding: 3px;
+        }
+        .nav-pill a {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--grey) !important;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .nav-pill a.active { background: var(--white); color: var(--red) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* ── HERO ───────────────────────────────── */
+        .hero {
+            position: relative;
+            height: calc(100vh - 72px);
+            min-height: 560px;
+            max-height: 860px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, rgba(229,25,55,0.15) 100%),
+                        url('https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1920&q=80') center/cover;
+        }
+        .hero-content { position: relative; z-index: 2; color: white; }
+        .hero-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hero-label::before {
+            content: '';
+            width: 32px;
+            height: 2px;
+            background: var(--red);
+        }
+        .hero-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            line-height: 0.95;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+        }
+        .hero-title span { color: var(--red); }
+        .hero-sub {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.75);
+            max-width: 440px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        .btn-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--red);
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border-radius: 3px;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+        .btn-hero:hover { background: var(--red-dark); color: white; transform: translateX(4px); }
+        .btn-hero i { font-size: 1rem; transition: transform 0.2s; }
+        .btn-hero:hover i { transform: translateX(4px); }
+
+        .hero-stats {
+            position: absolute;
+            bottom: 48px;
+            right: 0;
+            display: flex;
+            gap: 1px;
+            z-index: 2;
+        }
+        .hero-stat {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 28px;
+            text-align: center;
+            color: white;
+        }
+        .hero-stat-val {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--red);
+            line-height: 1;
+        }
+        .hero-stat-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+        }
+
+        /* ── SERVICES ───────────────────────────── */
+        .services-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        .section-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-tag::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--red);
+        }
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            text-transform: uppercase;
+            line-height: 1;
+            letter-spacing: -0.5px;
+            margin-bottom: 60px;
+        }
+
+        .service-card {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .service-card:hover { transform: translateY(-8px); }
+
+        .service-card-img {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .service-card:hover .service-card-img { transform: scale(1.08); }
+
+        .service-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            transition: background 0.4s;
+        }
+        .service-card:hover .service-card-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 50%, rgba(229,25,55,0.1) 100%);
+        }
+
+        .service-card-body {
+            position: relative;
+            z-index: 2;
+            padding: 32px 28px;
+            color: white;
+        }
+        .service-card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            transition: transform 0.3s;
+        }
+        .service-card:hover .service-card-icon { transform: scale(1.15); }
+        .service-card-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .service-card-desc {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.5;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s;
+            opacity: 0;
+        }
+        .service-card:hover .service-card-desc { max-height: 80px; opacity: 1; }
+        .service-card-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-top: 16px;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.3s 0.1s, transform 0.3s 0.1s;
+        }
+        .service-card:hover .service-card-arrow { opacity: 1; transform: translateX(0); }
+
+        /* ── WHY CHOOSE ─────────────────────────── */
+        .why-section {
+            background: var(--dark);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .why-section::before {
+            content: 'E-SERVICE';
+            position: absolute;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18vw;
+            font-weight: 900;
+            color: rgba(255,255,255,0.02);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .why-section .section-title { color: white; margin-bottom: 70px; }
+        .why-section .section-tag { color: var(--red); }
+
+        .why-item {
+            border-left: 2px solid var(--mid);
+            padding: 24px 0 24px 32px;
+            transition: border-color 0.3s;
+        }
+        .why-item:hover { border-color: var(--red); }
+        .why-num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--red);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .why-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .why-desc {
+            font-size: 0.85rem;
+            color: var(--grey);
+            line-height: 1.6;
+        }
+
+        /* ── FOOTER ─────────────────────────────── */
+        .footer-section {
+            background: var(--light);
+            padding: 70px 0 30px;
+            border-top: 1px solid #e8e8e8;
+        }
+        .footer-brand {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .footer-brand span { color: var(--red); }
+        .footer-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--grey);
+            margin-bottom: 20px;
+        }
+        .footer-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #444;
+        }
+        .footer-item i { color: var(--red); margin-top: 2px; }
+        .footer-hours { font-size: 0.85rem; color: #666; margin-bottom: 6px; }
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--dark);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .social-btn:hover { background: var(--red); color: white; transform: translateY(-2px); }
+        .footer-divider { border: none; border-top: 1px solid #e0e0e0; margin: 40px 0 20px; }
+        .copyright { font-size: 0.82rem; color: var(--grey); }
+
+        /* ── ANIMATIONS ─────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-content > * {
+            animation: fadeUp 0.7s ease both;
+        }
+        .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+        .hero-content > *:nth-child(2) { animation-delay: 0.25s; }
+        .hero-content > *:nth-child(3) { animation-delay: 0.4s; }
+        .hero-content > *:nth-child(4) { animation-delay: 0.55s; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container d-flex align-items-center gap-3">
+            <a class="navbar-brand me-4" href="index.html">E-<span>SERVICE</span></a>
+
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pricing_en.html">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#location">Location</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <div class="nav-pill">
+                        <a href="ua.html">УКР</a>
+                        <a href="index.html" class="active">ENG</a>
+                    </div>
+                    <a href="booking_en.html" class="btn-nav">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-label">Tesla Service Lviv</div>
+                <h1 class="hero-title">Expert Care<br>For Your <span>Tesla</span></h1>
+                <p class="hero-sub">Certified diagnostics, battery health checks, and premium maintenance by Tesla-trained technicians.</p>
+                <a href="booking_en.html" class="btn-hero">Schedule Service <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="hero-stats container">
+            <div class="hero-stat">
+                <div class="hero-stat-val">100%</div>
+                <div class="hero-stat-label">Original Parts</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-val">24/7</div>
+                <div class="hero-stat-label">Support</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-val">OTA</div>
+                <div class="hero-stat-label">SW Updates</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-tag">What We Offer</div>
+            <h2 class="section-title">Our Services</h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card" onclick="location.href='booking_en.html'">
+                        <div class="service-card-img" style="background-image: url('https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80')"></div>
+                        <div class="service-card-overlay"></div>
+                        <div class="service-card-body">
+                            <div class="service-card-icon"><i class="bi bi-lightning-fill"></i></div>
+                            <div class="service-card-title">Full Diagnostics</div>
+                            <div class="service-card-desc">Comprehensive computer diagnostics using Tesla-certified Toolbox equipment. Full system scan and error reading.</div>
+                            <div class="service-card-arrow">Book Now <i class="bi bi-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card" onclick="location.href='booking_en.html'">
+                        <div class="service-card-img" style="background-image: url('https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=800&q=80')"></div>
+                        <div class="service-card-overlay"></div>
+                        <div class="service-card-body">
+                            <div class="service-card-icon"><i class="bi bi-battery-charging"></i></div>
+                            <div class="service-card-title">Battery & Drive Unit</div>
+                            <div class="service-card-desc">Expert battery health monitoring, degradation analysis, and drive unit maintenance by certified specialists.</div>
+                            <div class="service-card-arrow">Book Now <i class="bi bi-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card" onclick="location.href='booking_en.html'">
+                        <div class="service-card-img" style="background-image: url('https://images.unsplash.com/photo-1621955964441-c173e01c135b?auto=format&fit=crop&w=800&q=80')"></div>
+                        <div class="service-card-overlay"></div>
+                        <div class="service-card-body">
+                            <div class="service-card-icon"><i class="bi bi-wrench-adjustable"></i></div>
+                            <div class="service-card-title">Body & Paint</div>
+                            <div class="service-card-desc">Premium body repair and precision paint matching for a factory-perfect, flawless finish.</div>
+                            <div class="service-card-arrow">Book Now <i class="bi bi-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE -->
+    <section id="about" class="why-section">
+        <div class="container">
+            <div class="section-tag" style="color:var(--red)">Why Choose Us</div>
+            <h2 class="section-title" style="color:white">The Standard<br>You Deserve</h2>
+
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="why-item">
+                        <div class="why-num">100%</div>
+                        <div class="why-label">Original Tesla Parts</div>
+                        <div class="why-desc">Only genuine components — no substitutes, no compromises.</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="why-item">
+                        <div class="why-num">24/7</div>
+                        <div class="why-label">Emergency Support</div>
+                        <div class="why-desc">Round-the-clock assistance whenever you need it most.</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="why-item">
+                        <div class="why-num">OTA</div>
+                        <div class="why-label">Software Updates</div>
+                        <div class="why-desc">Latest firmware and navigation maps always up to date.</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="why-item">
+                        <div class="why-num">✓</div>
+                        <div class="why-label">Full Warranty</div>
+                        <div class="why-desc">All services come with a comprehensive warranty guarantee.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="location" class="footer-section">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-4">
+                    <div class="footer-brand">E-<span>SERVICE</span></div>
+                    <p style="font-size:0.88rem; color:#666; line-height:1.6; max-width:260px;">Tesla-certified service center in Lviv. Professional care for your electric vehicle.</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Contact Us</div>
+                    <div class="footer-item"><i class="bi bi-telephone"></i> +380 (068) 435-78-58</div>
+                    <div class="footer-item"><i class="bi bi-geo-alt"></i> вул. Патона, буд.1,<br>м. Львів, 79040</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-title">Service Hours</div>
+                    <div class="footer-hours">Mon – Fri: 8:00 AM – 6:00 PM</div>
+                    <div class="footer-hours">Saturday: 9:00 AM – 4:00 PM</div>
+                    <div class="footer-hours" style="color:var(--red)">Sunday: Closed</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="footer-title">Follow Us</div>
+                    <a href="#" class="social-btn"><i class="bi bi-instagram"></i> Instagram</a>
+                    <a href="#" class="social-btn"><i class="bi bi-telegram"></i> Telegram</a>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="copyright">© 2026 E-SERVICE Tesla Center. All rights reserved.</div>
+                <div class="d-flex gap-3">
+                    <a href="pricing_en.html" style="font-size:0.82rem; color:var(--grey); text-decoration:none;">Pricing</a>
+                    <a href="booking_en.html" style="font-size:0.82rem; color:var(--red); text-decoration:none; font-weight:600;">Book Appointment →</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
